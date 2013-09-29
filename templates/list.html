@@ -44,7 +44,6 @@
 				<td align="right">{{post.title}}</td>
 				<td align="center"><input type='button' value='Edit' id={{loop.index}} placeholder="{{post.title}}"></td>
 				<script type="text/javascript">
-					//alert('post title: '+ "{{post.title}}");
 					$("#{{loop.index}}").click(function(){
 					if( $(this).prop('value')=='Edit' ){
 						$(this).prop('value', 'Save');
@@ -60,10 +59,7 @@
 								needToSee.push("{{name}}");
 							}
 						{% endfor %}
-						alert('posting '+ $(this).prop('placeholder') + ' with ' + needToSee);
-						$.post('{{request.path}}', {title: $(this).prop('placeholder'), data: needToSee.toString()}).done(function(data){
-							alert(data);
-						});
+						$.post('{{request.path}}', {title: $(this).prop('placeholder'), data: needToSee.toString()});
 					}
 				});
 				</script>

@@ -20,6 +20,7 @@
   </head>
 
   <body>
+  
     <header>
       <div class="inner">
         <h1>movlistr</h1>
@@ -27,7 +28,7 @@
         <a href="https://github.com/dbordak/movlistr" class="button"><small>View project on</small>GitHub</a>
       </div>
     </header>
-
+{% if posts %}
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
@@ -140,7 +141,18 @@
 		</table>
 
         </section>
-
+{% else %}
+<p>Group name:</p>
+<input type='text' id='groupName'>
+<p>Friend names, comma separated:</p>
+<input type='text' id='friendNames'>
+<input type='button' value='Create New Group' id='newGroupButton'>
+<script type="text/javascript">
+	$('#newGroupButton').click(function(){
+		$.post('/'+$('#groupName').val(), {data:$('#friendNames').val()});
+	});
+</script>
+{% endif %} 
         <aside id="sidebar">
 <!--
           <a href="https://github.com/revansopher/page/zipball/master" class="button">
@@ -158,6 +170,6 @@
       </div>
     </div>
 
-  
+ 
   </body>
 </html>

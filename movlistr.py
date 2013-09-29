@@ -126,7 +126,7 @@ def viewGroup(group):
 		updateFromString(group, request.form['title'], request.form['data'])
 		return 'good'
 
-jsonToArray(Jason):
+def jsonToArray(Jason):
 	movies = []
 	for m in Jason:
 		mov = [ Jason['title'], Jason['peeps'], Jason['summary'], Jason['review'] ]

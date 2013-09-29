@@ -34,4 +34,4 @@ def search(peepArray,group):
 	peepString = ""
 	for peep in peepArray:
 		peepString = peepString + peep + " "
-	db.command('text',group,search=peepString,limit=10)
+	return db.command('text',group,search=peepString,limit=10)['results']

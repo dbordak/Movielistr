@@ -4,12 +4,10 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
-UNAME = 'dosh'
 PASSWORD = os.environ.get('MONGO_PASS', None)
-URI = 'mongodb://' + UNAME + ':' + str(PASSWORD) + '@ds047458.mongolab.com:47458/movlistr'
-print URI
-client = MongoClient('URI')
-db = MongoClient.movlistr
+connection = MongoClient("ds047458.mongolab.com", 47458)
+db = connection["movlistr"]
+db.authenticate("dosh", str(PASSWORD))
 
 @app.route('/')
 def index():

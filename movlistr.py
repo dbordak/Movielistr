@@ -48,6 +48,7 @@ def makeResultsJson(Jason):
 				"link" : j['results'][0]['link']['url']
 				}
 			nyt.append(m.copy())
+	return nyt
 
 def getResults(group,peepString):
 	print "test"

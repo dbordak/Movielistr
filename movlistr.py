@@ -13,6 +13,7 @@ connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
 db = connection["movlistrdev"]
 db.authenticate(str(UNAME), str(PASSWORD))
 MAX_RECOMMENDATIONS = 5
+NYT_API_KEY = os.environ.get('NYT_API_KEY', None)
 
 # Returns a JSON array whose elements contain the fields "score" and "obj".
 # After the search is completed, "score" is no longer needed -- in order to

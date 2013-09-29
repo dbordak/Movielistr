@@ -33,6 +33,10 @@ def viewGroup(group):
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')
 
+# Returns a JSON array whose elements contain the fields "score" and "obj".
+# After the search is completed, "score" is no longer needed -- in order to
+# use the results, you should iterate through the array and use the "obj"s,
+# which contain the usual _id, title, and peeps fields.
 def search(peepArray,group):
 	peepString = ""
 	for peep in peepArray:

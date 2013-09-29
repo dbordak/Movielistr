@@ -37,7 +37,7 @@ def viewGroup(group):
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')
 	p = [ "Bonk", "Boink" ]
-	createGroup(
+	createGroup("Scoot",p,"Pootisman 2",p)
 
 # Returns a JSON array whose elements contain the fields "score" and "obj".
 # After the search is completed, "score" is no longer needed -- in order to

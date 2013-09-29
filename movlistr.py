@@ -68,6 +68,12 @@ def makeResultJson(Jason):
 def getResults(group,peepString):
 	return makeResultsJson(search(group,peepString))
 
+def simpleCreateGroup(groupName, peepString):
+	peepString = peepString.replace(","," ")
+	title = "Star Wars Holiday Special"
+	subPeepArray = peepString.split()
+	createGroup(groupName,peepString,title,subPeepArray)
+
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.
 def createGroup(groupName, peepString, title, subPeepArray):
@@ -130,8 +136,9 @@ def jsonToStringThing(Jason):
 	movString = ""
 	for m in Jason:
 		peepString = ""
+		#for x in range(0,len(m['peeps'])):
 		for peep in m['peeps']:
-			peepString + peep + " "
+			peepString = peepString + peep + " "
 		peepString.strip()
 		movString = movString + m['title'] + " needs to be seen by " + peepString + ".\n" + '"' + m['summary'] + '"' + "\n" + "New York Times Review at: " + m['link'] + "\n\n"
 	return movString

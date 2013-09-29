@@ -54,6 +54,8 @@ def search(peepArray,group):
 def createGroup(peepArray,groupName,title,subPeepArray):
 	nam=db["NAMES"+groupName]
 	nam.insert({"names":peepArray})
+	addMovie(title,subPeepArray,groupName)
+	db[groupName].create_index([('peeps','text')])
 
 def addMovie(title,peepArray,groupName):
 	grp=db[groupName]

@@ -126,13 +126,19 @@ def viewGroup(group):
 		updateFromString(group, request.form['title'], request.form['data'])
 		return 'good'
 
+jsonToArray(Jason):
+	movies = []
+	for m in Jason:
+		mov = [ Jason['title'], Jason['peeps'], Jason['summary'], Jason['review'] ]
+		movies.append(mov.copy())
+	return movies
+
 @app.route('/g/<group>/s', methods=['POST'])
 def searchRoute(group):
 	#return str(request.form['data'])
 	resultJson = search(group, request.form['data'])
 	results2 = makeResultJson(resultJson)
-	print str(results2)
-	return str(results2)
+	return str(jsonToArray(results2))
 
 
 if __name__ == "__main__":

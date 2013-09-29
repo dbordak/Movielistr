@@ -39,10 +39,12 @@ def search(group,peepArray):
 
 def makeResults(Jason):
 	movies = []
-	nyt = []
 	for movie in Jason:
-		movies = movies + movie['obj']
-		get_json(create_nyt_url(movie['obj']['title']))
+		m = movie['obj']
+		j = get_json(create_nyt_url(movie['obj']['title']))
+		m['summary'] = j['capsule_review']
+		m['link'] = j['link']['url']
+		movies = movies + m
 
 
 # Mongo won't actually create a collection unless there's an element, so
@@ -61,7 +63,6 @@ def addMovie(groupName,title,peepArray):
 		"peeps" : peepArray
 		} )
 
-# This command has not been tested
 def updatePeeps(groupName,title,peepArray):
 	grp=db[groupName]
 	if len(peepArray):	

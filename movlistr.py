@@ -99,7 +99,7 @@ def viewGroup(group):
 
 		return render_template('list.html', posts=grp.find(), names=nam.find_one()['names'])
 	if request.method == 'POST':
-		updatePeeps(group, request.form['title'], request.form['data'])
+		updateFromString(group, request.form['title'], request.form['data'])
 		return 'good'
 
 

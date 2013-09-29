@@ -56,7 +56,7 @@
 						var needToSee = new Array();
 						{% set i = loop.index %}
 						{% for name in names %}
-							if($("#{{i ~ '_' ~ name}}").is(':checked') ){
+							if(!($("#{{i ~ '_' ~ name}}").is(':checked') )){
 								needToSee.push("{{name}}");
 							}
 						{% endfor %}

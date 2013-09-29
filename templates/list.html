@@ -14,6 +14,9 @@
     <![endif]-->
 
     <title>movlistr</title>
+
+    <script type="text/javascript" src="../static/jquery-1.10.2.min.js"></script>
+
   </head>
 
   <body>
@@ -31,17 +34,49 @@
 
 		<table border="1">
 			<tr>
-				<td align="right">TITLE</td>
-				<td>PEOPLE</td>
+				<td></td><td></td>
+				{% for name in names %}
+				<td>{{name}}</td>
+				{% endfor %}
 			</tr>
 			{% for post in posts %}
 			<tr>
 				<td align="right">{{post.title}}</td>
+				<td align="center"><input type='button' value='Edit' id={{loop.index}}></td>
+				<script type="text/javascript">
+					$("#{{loop.index}}").click(function(){
+					if( $(this).prop('value')=='Edit' ){
+						$(this).prop('value', 'Save');
+						$("input.{{loop.index}}").prop("disabled", false);
+					}else{
+						$("input.{{loop.index}}").prop("disabled", true);
+						$(this).prop('value', 'Edit');
+						//TODO: actually save values
+					}
+				});
+				</script>
+				{% with found=0 %}
+				{% set iter=loop.index %}
+					{% for name in names %}
+						<td align="center">
+						{% for peep in post.peeps %}
+							{% if peep == name %}
+								<input type='checkbox' disabled=true class={{iter}}>
+								{% set found=1 %}
+							{% endif %}
+							{% if loop.last and found==0 %}
+								<input type='checkbox' checked=true disabled=true class={{iter}}>
+							{% endif %}
+						{% endfor %}
+						</td>
+					{% endfor %}
+				{% endwith %}
+				<!--
 				<td>
 				{% for person in post.peeps %}
 				{{person}}
 				{% endfor %}
-				</td>
+				</td>-->
 			</tr>
 			{% endfor %}
 		</table>

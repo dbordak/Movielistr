@@ -128,7 +128,6 @@ def searchRoute(group):
 	#return str(request.form['data'])
 	resultJson = search(group, request.form['data'])
 	results2 = makeResultJson(resultJson)
-	print str(results2)
 	return str(results2)
 
 @app.route('/g/<group>/a', methods=['POST'])

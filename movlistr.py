@@ -25,7 +25,7 @@ def create_nyt_url(searchTerm,exact):
 	if exact:
 		return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_API_KEY
 	else:
-		return NYT_BASE_URL+"&query="+searchTerm+"&api-key="+NYT_API_KEY
+		return NYT_BASE_URL+"&query="+searchTerm+"&critics-pick=Y&api-key="+NYT_API_KEY
 
 def get_json(URL):
 	return loads(urlopen(URL).read())
@@ -51,15 +51,17 @@ def makeResultsJson(Jason):
 				"link" : j['results'][0]['link']['url']
 				}
 			nyt.append(m.copy())
-		else:
-			URL = create_nyt_url(movie['obj']['title'],False)
-			j = get_json(URL)
-			if int(j['num_results']):
-				m = {
-					"summary" : j['results'][0]['capsule_review'],
-					"link" : j['results'][0]['link']['url']
-					}
-				nyt.append(m.copy())
+		#else:
+		#	URL2 = create_nyt_url(movie['obj']['title'],False)
+		#	print URL2
+		#	j = get_json(URL2)
+		#	print "test?"
+		#	if int(j['num_results']):
+		#		m = {
+		#			"summary" : j['results'][0]['capsule_review'],
+		#			"link" : j['results'][0]['link']['url']
+		#			}
+		#		nyt.append(m.copy())
 	return nyt
 
 def getResults(group,peepString):

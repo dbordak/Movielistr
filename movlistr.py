@@ -11,12 +11,13 @@ app = Flask(__name__)
 UNAME = os.environ.get('MONGO_UNAME', None)
 PORT = os.environ.get('MONGO_PORT', None)
 PASSWORD = os.environ.get('MONGO_PASS', None)
-connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
-db = connection["movlistrdev"]
-db.authenticate(str(UNAME), str(PASSWORD))
 MAX_RECOMMENDATIONS = 5
 NYT_API_KEY = os.environ.get('NYT_API_KEY', None)
 NYT_BASE_URL = "http://api.nytimes.com/svc/movies/v2/reviews/search?&query='"
+
+connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
+db = connection["movlistrdev"]
+db.authenticate(str(UNAME), str(PASSWORD))
 
 def create_nyt_url(searchTerm):
 	searchTerm = searchTerm.replace(' ','+')

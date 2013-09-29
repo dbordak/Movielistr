@@ -31,10 +31,8 @@ def get_json(URL):
 # After the search is completed, "score" is no longer needed -- in order to
 # use the results, you should iterate through the array and use the "obj"s,
 # which contain the usual _id, title, and peeps fields.
-def search(group,peepArray):
-	peepString = ""
-	for peep in peepArray:
-		peepString = peepString + peep + " "
+def search(group,peepString):
+	peepString.replace(","," ")
 	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
 
 # Returns a json with Title, Peeps, Summary, and a link to the NYT review
@@ -47,8 +45,8 @@ def makeResultsJson(Jason):
 		m['link'] = j['link']['url']
 		movies.append(m)
 
-def getResults(group,peepArray):
-	return makeResultsJson(search(group,peepArray))
+def getResults(group,peepString):
+	return makeResultsJson(search(group,peepString))
 
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.

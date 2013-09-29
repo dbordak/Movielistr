@@ -57,7 +57,7 @@ def updatePeeps(groupName,title,peepArray):
 def index():
 	return 'Hello World'
 
-@app.route('/g/<group>')
+@app.route('/g/<group>', methods=['GET', 'POST'])
 def viewGroup(group):
 	if group.startswith("NAMES"):
 		return "nope"
@@ -65,17 +65,18 @@ def viewGroup(group):
 		return "nope"
 	if group.startswith("objectlabs"):
 		return "nope"
-	grp=db[group]
-	nam=db["NAMES"+group]
-	#ret = ''
-	#for post in grp.find():
-	#	ret = ret + str(post)
-	#return ret
+	if request.method == 'GET':
+		grp=db[group]
+		nam=db["NAMES"+group]
 
-	return render_template('list.html', posts=grp.find(), names=nam.find_one()['names'])
+		return render_template('list.html', posts=grp.find(), names=nam.find_one()['names'])
+	if request.method == 'POST':
+		updatePeeps(group, request.form['title'], request.form['data'])
+		return 'good'
+
 
 if __name__ == "__main__":
-	#app.debug = True
-	#app.run()
-	app.run(host='0.0.0.0')
+	app.debug = True
+	app.run()
+	#app.run(host='0.0.0.0')
 

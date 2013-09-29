@@ -11,9 +11,10 @@ app = Flask(__name__)
 UNAME = os.environ.get('MONGO_UNAME', None)
 PORT = os.environ.get('MONGO_PORT', None)
 PASSWORD = os.environ.get('MONGO_PASS', None)
-MAX_RECOMMENDATIONS = 5
 NYT_API_KEY = os.environ.get('NYT_API_KEY', None)
 NYT_BASE_URL = "http://api.nytimes.com/svc/movies/v2/reviews/search?"
+
+MAX_RECOMMENDATIONS = 3
 
 connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
 db = connection["movlistrdev"]
@@ -35,6 +36,10 @@ def search(group,peepArray):
 	for peep in peepArray:
 		peepString = peepString + peep + " "
 	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
+
+def makeResults(Jason):
+	for movie in Jason:
+
 
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.

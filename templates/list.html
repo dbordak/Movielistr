@@ -32,7 +32,31 @@
       <div class="inner clearfix">
         <section id="main-content">
 
+        <div id="results"></div>
+        
 		<table border="1">
+			<tr>
+				<td><input type='button' value='Pick best movies' id='recommendButton'></td>
+				<td></td>
+
+				{% for name in names %}
+				<td align="center"><input type='checkbox' class='select' id={{'select' ~ '_' ~ name}}></td>
+				{% endfor %}
+
+				<script type="text/javascript">
+		        	$('#recommendButton').click(function(){
+		        		var toSee = new Array();
+		        		{% for name in names %}
+							if($("#{{'select' ~ '_' ~ name}}").is(':checked') ){
+								toSee.push("{{name}}");
+							}
+						{% endfor %}
+						$.post('{{request.path}}', {data: toSee.toString()}).done(function(data){
+								$('#results').append(data);
+						});
+		        	});
+        		</script>
+			</tr>
 			<tr>
 				<td></td><td></td>
 				{% for name in names %}

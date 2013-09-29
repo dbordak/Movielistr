@@ -105,6 +105,10 @@ def viewGroup(group):
 		updateFromString(group, request.form['title'], request.form['data'])
 		return 'good'
 
+@app.route('/g/<group>/s' methods=['POST'])
+def s(group):
+	return search(group, request.form['data'])
+
 
 if __name__ == "__main__":
 	#app.debug = True

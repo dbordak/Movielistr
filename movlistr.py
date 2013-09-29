@@ -44,5 +44,12 @@ def search(peepArray,group):
 	return db.command('text',group,search=peepString,limit=10)['results']
 
 def createGroup(peepArray,groupName):
-	nam=db["NAMES"+group]
+	nam=db["NAMES"+groupName]
 	nam.insert({"names":peepArray})
+
+def addMovie(title,peepArray,groupName):
+	grp=db[groupName]
+	grp.insert( {
+		"title" : title,
+		"peeps" : peepArray
+		}

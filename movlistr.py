@@ -29,3 +29,9 @@ def viewGroup(group):
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')
+
+def search(peepArray,group):
+	peepString = ""
+	for peep in peepArray:
+		peepString = peepString + peep + " "
+	db.command('text',group,search=peepString,limit=10)

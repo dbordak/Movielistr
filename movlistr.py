@@ -3,15 +3,29 @@
 import os
 from flask import Flask, render_template, request
 from pymongo import MongoClient
+from urllib2 import urlopen
+from json import loads
 
 app = Flask(__name__)
 
 UNAME = os.environ.get('MONGO_UNAME', None)
 PORT = os.environ.get('MONGO_PORT', None)
 PASSWORD = os.environ.get('MONGO_PASS', None)
+NYT_API_KEY = os.environ.get('NYT_API_KEY', None)
+NYT_BASE_URL = "http://api.nytimes.com/svc/movies/v2/reviews/search?"
+
+MAX_RECOMMENDATIONS = 3
+
 connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
 db = connection["movlistrdev"]
 db.authenticate(str(UNAME), str(PASSWORD))
+
+def create_nyt_url(searchTerm):
+	searchTerm = searchTerm.replace(' ','+')
+	return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_BASE_URL
+
+def get_json(URL):
+	return loads(urlopen(URL).read())
 
 # Returns a JSON array whose elements contain the fields "score" and "obj".
 # After the search is completed, "score" is no longer needed -- in order to
@@ -21,11 +35,22 @@ def search(group,peepArray):
 	peepString = ""
 	for peep in peepArray:
 		peepString = peepString + peep + " "
-	return db.command('text',group,search=peepString,limit=10)['results']
+	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
+
+def makeResults(Jason):
+	movies = []
+	for movie in Jason:
+		m = movie['obj']
+		j = get_json(create_nyt_url(movie['obj']['title']))
+		m['summary'] = j['capsule_review']
+		m['link'] = j['link']['url']
+		movies = movies + m
+
 
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.
-def createGroup(groupName, peepArray, title, subPeepArray):
+def createGroup(groupName, peepString, title, subPeepArray):
+	peepArray = peepString.split()
 	nam=db["NAMES"+groupName]
 	nam.insert({"names":peepArray})
 	addMovie(groupName,title,subPeepArray)
@@ -38,7 +63,10 @@ def addMovie(groupName,title,peepArray):
 		"peeps" : peepArray
 		} )
 
-# This command has not been tested
+def updateFromString(groupName,title,peepString):
+	peepArray = peepString.split(',')
+	updatePeeps(groupName,title,peepArray)
+
 def updatePeeps(groupName,title,peepArray):
 	grp=db[groupName]
 	if len(peepArray):	

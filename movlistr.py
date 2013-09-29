@@ -129,7 +129,7 @@ def viewGroup(group):
 def jsonToArray(Jason):
 	movies = []
 	for m in Jason:
-		mov = [ Jason['title'], Jason['peeps'], Jason['summary'], Jason['review'] ]
+		mov = [ m['title'], m['peeps'], m['summary'], m['review'] ]
 		movies.append(mov.copy())
 	return movies
 

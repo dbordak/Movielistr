@@ -1,13 +1,21 @@
 <html>
 	<head></head>
 	<body>
-		{% for post in posts %}
-		<p>{{post.title}} - 
-			{% for person in post.peeps %}
-			{{person}}
+		<table border="1">
+			<tr>
+				<td>TITLE</td>
+				<td>PEOPLE</td>
+			</tr>
+			{% for post in posts %}
+			<tr>
+				<td>{{post.title}}</td>
+				<td>  
+				{% for person in post.peeps %}
+				{{person}}
+				{% endfor %}
+				</td>
+			</tr>
 			{% endfor %}
-		</p>
-		{% endfor %}
-
+		</table>
 	</body>
 </html>

@@ -126,19 +126,22 @@ def viewGroup(group):
 		updateFromString(group, request.form['title'], request.form['data'])
 		return 'good'
 
-def jsonToArray(Jason):
-	movies = []
+def jsonToStringThing(Jason):
+	movString = ""
 	for m in Jason:
-		mov = [ m['title'], m['peeps'], m['summary'], m['link'] ]
-		movies.append(mov)
-	return movies
+		peepString = ""
+		for peep in m['peeps']:
+			peepString + peep + " "
+		peepString.trim()
+		movString = movString + m['title'] + " needs to be seen by " + peepString + ".\n" + '"' m['summary'] + '"' + "\n" + "New York Times Review at: " + m['link'] + "\n\n"
+	return movString
 
 @app.route('/g/<group>/s', methods=['POST'])
 def searchRoute(group):
 	#return str(request.form['data'])
 	resultJson = search(group, request.form['data'])
 	results2 = makeResultJson(resultJson)
-	return str(jsonToArray(results2)).replace("u'","'").replace('u"','"')
+	return jsonToStringThing(results2)
 
 
 if __name__ == "__main__":

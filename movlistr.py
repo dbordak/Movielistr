@@ -39,17 +39,24 @@ def addMovie(groupName,title,peepArray):
 		} )
 
 # This command has not been tested
-def updatePeeps(groupName,idnum,peepArray):
+def updatePeeps(groupName,title,peepArray):
 	grp=db[groupName]
-	if len(peepArray):
-		grp.update( { "_id" : idnum }, { "$set" : { "peeps" : peepArray } } )
+	if len(peepArray):	
+		newEntry = {
+				"title" : title,
+				"peeps" : peepArray
+				}
+		grp.find_and_modify(
+				query={ "title" : title },
+				update=newEntry
+				)
 	else:
-		grp.remove( { "_id" : idnum } )
+		grp.remove( { "title" : title } )
 
 @app.route('/')
 def index():
-	#p = [ "Bonk", "Boink" ]
-	#createGroup("Scoot", p, "Pootisman 2", p)
+	p = []
+	updatePeeps("Scoot","Pootisman 2",p)
 	return 'Hello World'
 
 @app.route('/g/<group>')

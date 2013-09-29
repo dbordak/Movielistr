@@ -38,7 +38,11 @@ def search(group,peepArray):
 	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
 
 def makeResults(Jason):
+	movies = []
+	nyt = []
 	for movie in Jason:
+		movies = movies + movie['obj']
+		get_json(create_nyt_url(movie['obj']['title']))
 
 
 # Mongo won't actually create a collection unless there's an element, so

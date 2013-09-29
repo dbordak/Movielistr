@@ -36,12 +36,14 @@ def viewGroup(group):
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')
+	p = [ "Bonk", "Boink" ]
+	createGroup(
 
 # Returns a JSON array whose elements contain the fields "score" and "obj".
 # After the search is completed, "score" is no longer needed -- in order to
 # use the results, you should iterate through the array and use the "obj"s,
 # which contain the usual _id, title, and peeps fields.
-def search(peepArray,group):
+def search(group,peepArray):
 	peepString = ""
 	for peep in peepArray:
 		peepString = peepString + peep + " "
@@ -51,20 +53,20 @@ def search(peepArray,group):
 
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.
-def createGroup(peepArray,groupName,title,subPeepArray):
+def createGroup(groupName,peepArray,title,subPeepArray):
 	nam=db["NAMES"+groupName]
 	nam.insert({"names":peepArray})
-	addMovie(title,subPeepArray,groupName)
+	addMovie(groupName,title,subPeepArray)
 	db[groupName].create_index([('peeps','text')])
 
-def addMovie(title,peepArray,groupName):
+def addMovie(groupName,title,peepArray):
 	grp=db[groupName]
 	grp.insert( {
 		"title" : title,
 		"peeps" : peepArray
 		} )
 
-def updatePeeps(idnum,peepArray,groupName):
+def updatePeeps(groupName,idnum,peepArray):
 	grp=db[groupName]
 	if len(peepArray):
 		grp.update( { "_id" : idnum }, { "$set" : { "peeps" : peepArray } } )

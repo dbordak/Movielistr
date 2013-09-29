@@ -46,6 +46,7 @@ def updatePeeps(groupName,idnum,peepArray):
 		grp.update( { "_id" : idnum }, { "$set" : { "peeps" : peepArray } } )
 	else:
 		grp.remove( { "_id" : idnum } )
+
 @app.route('/')
 def index():
 	#p = [ "Bonk", "Boink" ]
@@ -70,7 +71,7 @@ def viewGroup(group):
 	return render_template('list.html', posts=grp.find())
 
 if __name__ == "__main__":
-	app.debug = True
-	app.run()
-	#app.run(host='0.0.0.0')
+	#app.debug = True
+	#app.run()
+	app.run(host='0.0.0.0')
 

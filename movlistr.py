@@ -23,7 +23,7 @@ def create_nyt_url(searchTerm):
 	searchTerm = searchTerm.replace(' ','+')
 	return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_BASE_URL
 
-def get_nyt_json(URL):
+def get_json(URL):
 	return loads(urlopen(URL).read())
 
 # Returns a JSON array whose elements contain the fields "score" and "obj".

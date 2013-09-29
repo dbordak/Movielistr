@@ -12,6 +12,7 @@ PASSWORD = os.environ.get('MONGO_PASS', None)
 connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
 db = connection["movlistrdev"]
 db.authenticate(str(UNAME), str(PASSWORD))
+MAX_RECOMMENDATIONS = 5
 
 # Returns a JSON array whose elements contain the fields "score" and "obj".
 # After the search is completed, "score" is no longer needed -- in order to
@@ -21,7 +22,7 @@ def search(group,peepArray):
 	peepString = ""
 	for peep in peepArray:
 		peepString = peepString + peep + " "
-	return db.command('text',group,search=peepString,limit=10)['results']
+	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
 
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.

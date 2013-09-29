@@ -20,9 +20,12 @@ connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
 db = connection["movlistrdev"]
 db.authenticate(str(UNAME), str(PASSWORD))
 
-def create_nyt_url(searchTerm):
+def create_nyt_url(searchTerm,exact):
 	searchTerm = searchTerm.replace(' ','+')
-	return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_API_KEY
+	if exact:
+		return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_API_KEY
+	else:
+		return NYT_BASE_URL+"&query="+searchTerm+"&api-key="+NYT_API_KEY
 
 def get_json(URL):
 	return loads(urlopen(URL).read())
@@ -39,7 +42,7 @@ def search(group,peepString):
 def makeResultsJson(Jason):
 	nyt = []
 	for movie in Jason:
-		URL = create_nyt_url(movie['obj']['title'])
+		URL = create_nyt_url(movie['obj']['title'],True)
 		print URL
 		j = get_json(URL)
 		if int(j['num_results']):
@@ -48,6 +51,15 @@ def makeResultsJson(Jason):
 				"link" : j['results'][0]['link']['url']
 				}
 			nyt.append(m.copy())
+		else:
+			URL = create_nyt_url(movie['obj']['title'],False)
+			j = get_json(URL)
+			if int(j['num_results']):
+				m = {
+					"summary" : j['results'][0]['capsule_review'],
+					"link" : j['results'][0]['link']['url']
+					}
+				nyt.append(m.copy())
 	return nyt
 
 def getResults(group,peepString):

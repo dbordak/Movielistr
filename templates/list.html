@@ -60,7 +60,32 @@
         		</script>
 			</tr>
 			<tr>
-				<td></td><td></td>
+				<td>
+					<input type='button' value='Add movie' id='addButton'>
+					<input type='text' id='addField'>
+					<input type='button' value='>' id='addSubmitButton'>
+				</td>
+				<script type="text/javascript">
+					$("#addField").hide();
+					$("#addSubmitButton").hide();
+					$("#addButton").click(function(){
+						$("#addButton").hide();
+						$("#addField").show();
+						$("#addSubmitButton").show();
+					});
+					$("#addSubmitButton").click(function(){
+						var needToSee = new Array();
+						{% for name in names %}
+							needToSee.push("{{name}}");
+						{% endfor %}
+						$.post('{{request.path~"/a"}}', {title: $("#addField").val(), data: needToSee.toString()});
+
+						$("#addButton").show();
+						$("#addField").hide();
+						$("#addSubmitButton").hide();
+					});
+				</script>
+				<td></td>
 				{% for name in names %}
 				<td align="center">{{name}}</td>
 				{% endfor %}

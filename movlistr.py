@@ -42,3 +42,7 @@ def search(peepArray,group):
 	for peep in peepArray:
 		peepString = peepString + peep + " "
 	return db.command('text',group,search=peepString,limit=10)['results']
+
+def createGroup(peepArray,groupName):
+	nam=db["NAMES"+group]
+	nam.insert({"names":peepArray})

@@ -56,4 +56,4 @@ def addMovie(title,peepArray,groupName):
 	grp.insert( {
 		"title" : title,
 		"peeps" : peepArray
-		}
+		} )

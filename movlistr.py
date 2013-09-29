@@ -39,22 +39,19 @@ def search(group,peepString):
 	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
 
 # Returns a json with Title, Peeps, Summary, and a link to the NYT review
-def make_NYT_Json(Jason):
-	nyt = []
+def makeResultJson(Jason):
+	final = []
 	for movie in Jason:
 		URL = create_nyt_url(movie['obj']['title'],True)
 		j = get_json(URL)
+		m = movie['obj']
 		if int(j['num_results']):
-			m = {
-				"summary" : j['results'][0]['capsule_review'],
-				"link" : j['results'][0]['link']['url']
-				}
-			nyt.append(m.copy())
+			m['summary'] = j['results'][0]['capsule_review']
+			m['link'] = j['results'][0]['link']['url']
 		else:
-			m = {
-				"summary" : "No summary found",
-				"link" : "No link found"
-				}
+			m["summary"] = "No summary found"
+			m["link"] = "No link found"
+		final.append(m.copy())
 		#else:
 		#	URL2 = create_nyt_url(movie['obj']['title'],False)
 		#	print URL2
@@ -66,19 +63,10 @@ def make_NYT_Json(Jason):
 		#			"link" : j['results'][0]['link']['url']
 		#			}
 		#		nyt.append(m.copy())
-	return nyt
+	return final
 
 def getResults(group,peepString):
 	return makeResultsJson(search(group,peepString))
-
-def compileJson(movieJson,NYT_Json):
-	final = []
-	for m in movieJson:
-		movie = m['obj']
-		movie['summary'] = NYT_Json['summary']
-		movie['link'] = NYT_Json['link']
-		final.append(movie.copy())
-	return final
 
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.
@@ -139,8 +127,9 @@ def viewGroup(group):
 def searchRoute(group):
 	#return str(request.form['data'])
 	resultJson = search(group, request.form['data'])
-	results2 = make_NYT_Json(resultJson)
-	return compileJson(resultJson,results2)
+	results2 = makeResultJson(resultJson)
+	print str(results2)
+	return str(results2)
 
 
 if __name__ == "__main__":

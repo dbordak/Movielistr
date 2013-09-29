@@ -13,7 +13,7 @@ PORT = os.environ.get('MONGO_PORT', None)
 PASSWORD = os.environ.get('MONGO_PASS', None)
 MAX_RECOMMENDATIONS = 5
 NYT_API_KEY = os.environ.get('NYT_API_KEY', None)
-NYT_BASE_URL = "http://api.nytimes.com/svc/movies/v2/reviews/search?&query='"
+NYT_BASE_URL = "http://api.nytimes.com/svc/movies/v2/reviews/search?"
 
 connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
 db = connection["movlistrdev"]
@@ -21,7 +21,7 @@ db.authenticate(str(UNAME), str(PASSWORD))
 
 def create_nyt_url(searchTerm):
 	searchTerm = searchTerm.replace(' ','+')
-	return NYT_BASE_URL+searchTerm+"'&api-key="+NYT_BASE_URL
+	return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_BASE_URL
 
 # Returns a JSON array whose elements contain the fields "score" and "obj".
 # After the search is completed, "score" is no longer needed -- in order to

@@ -26,7 +26,8 @@ def search(group,peepArray):
 
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.
-def createGroup(groupName, peepArray, title, subPeepArray):
+def createGroup(groupName, peepString, title, subPeepArray):
+	peepArray = peepString.split()
 	nam=db["NAMES"+groupName]
 	nam.insert({"names":peepArray})
 	addMovie(groupName,title,subPeepArray)

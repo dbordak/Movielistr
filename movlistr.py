@@ -1,4 +1,4 @@
-#! /usr/bin/python2
+#!/usr/bin/python2
 
 import os
 from flask import Flask, render_template, request

@@ -55,8 +55,6 @@ def updatePeeps(groupName,title,peepArray):
 
 @app.route('/')
 def index():
-	p = []
-	updatePeeps("Scoot","Pootisman 2",p)
 	return 'Hello World'
 
 @app.route('/g/<group>')

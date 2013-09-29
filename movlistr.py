@@ -14,6 +14,7 @@ db = connection["movlistrdev"]
 db.authenticate(str(UNAME), str(PASSWORD))
 MAX_RECOMMENDATIONS = 5
 NYT_API_KEY = os.environ.get('NYT_API_KEY', None)
+NYT_BASE_URL = "http://api.nytimes.com/svc/movies/v2/reviews/search?&query='"
 
 # Returns a JSON array whose elements contain the fields "score" and "obj".
 # After the search is completed, "score" is no longer needed -- in order to
@@ -55,6 +56,10 @@ def updatePeeps(groupName,title,peepArray):
 				)
 	else:
 		grp.remove( { "title" : title } )
+
+def create_nyt_url(searchTerm):
+	searchTerm = searchTerm.replace(' ','+')
+	return NYT_BASE_URL+searchTerm+"'&api-key="+NYT_BASE_URL
 
 @app.route('/')
 def index():

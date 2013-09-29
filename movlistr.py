@@ -90,7 +90,10 @@ def updateFromString(groupName,title,peepString):
 
 def updatePeeps(groupName,title,peepArray):
 	grp=db[groupName]
-	if len(peepArray):	
+	if len(peepArray)==1:
+		if len(peepArray[0])==0:
+			grp.remove( { "title" : title } )
+	elif len(peepArray):	
 		newEntry = {
 				"title" : title,
 				"peeps" : peepArray
@@ -128,12 +131,8 @@ def searchRoute(group):
 	#return str(request.form['data'])
 	resultJson = search(group, request.form['data'])
 	results2 = makeResultJson(resultJson)
+	print str(results2)
 	return str(results2)
-
-@app.route('/g/<group>/a', methods=['POST'])
-def addRoute(group):
-	addMovie(group, request.form['title'], request.form['data'].split(','))
-	return 'added'
 
 
 if __name__ == "__main__":

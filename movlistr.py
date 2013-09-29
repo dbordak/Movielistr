@@ -57,3 +57,7 @@ def addMovie(title,peepArray,groupName):
 		"title" : title,
 		"peeps" : peepArray
 		} )
+
+def updatePeeps(idnum,peepArray,groupName):
+	grp=db[groupName]
+	grp.update( { "_id" : idnum }, { "$set" : { "peeps" : peepArray } } )

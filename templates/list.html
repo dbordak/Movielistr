@@ -1,0 +1,13 @@
+<html>
+	<head></head>
+	<body>
+		{% for post in posts %}
+		<p>{{post.title}} - 
+			{% for person in post.peeps %}
+			{{person}}
+			{% endfor %}
+		</p>
+		{% endfor %}
+
+	</body>
+</html>

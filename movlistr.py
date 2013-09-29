@@ -15,5 +15,15 @@ db.authenticate("dosh", str(PASSWORD))
 def index():
 	return 'Hello World'
 
+@app.route('/g/<group>')
+def viewGroup(group):
+	grp=db[group]
+	#ret = ''
+	#for post in grp.find():
+	#	ret = ret + str(post)
+	#return ret
+
+	return render_template('list.html', posts=grp.find())
+
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')

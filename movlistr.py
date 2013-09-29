@@ -37,16 +37,17 @@ def search(group,peepString):
 
 # Returns a json with Title, Peeps, Summary, and a link to the NYT review
 def makeResultsJson(Jason):
-	movies = []
+	nyt = []
 	for movie in Jason:
-		m = movie['obj']
-		print "I got to here"
-		#URL = create_nyt_url(movie['obj']['title'])
-		#print URL
-		#j = get_json(URL)
-		#m['summary'] = j['capsule_review']
-		#m['link'] = j['link']['url']
-		movies.append(m)
+		URL = create_nyt_url(movie['obj']['title'])
+		print URL
+		j = get_json(URL)
+		if int(j['num_results']):
+			m = {
+				"summary" : j['results'][0]['capsule_review'],
+				"link" : j['results'][0]['link']['url']
+				}
+			nyt.append(m.copy())
 
 def getResults(group,peepString):
 	print "test"
@@ -111,7 +112,11 @@ def viewGroup(group):
 def searchRoute(group):
 	#return str(request.form['data'])
 	print "Before calling getResults"
-	return getResults(group, request.form['data'])
+	resultJson = search(group, request.form['data'])
+	print str(resultJson)
+	results2 = makeResultsJson(resultJson)
+	print str(results2)
+	return "nothing"
 
 
 if __name__ == "__main__":

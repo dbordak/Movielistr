@@ -23,6 +23,9 @@ def create_nyt_url(searchTerm):
 	searchTerm = searchTerm.replace(' ','+')
 	return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_BASE_URL
 
+def get_nyt_json(URL):
+	return loads(urlopen(URL).read())
+
 # Returns a JSON array whose elements contain the fields "score" and "obj".
 # After the search is completed, "score" is no longer needed -- in order to
 # use the results, you should iterate through the array and use the "obj"s,

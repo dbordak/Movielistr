@@ -63,6 +63,10 @@ def addMovie(groupName,title,peepArray):
 		"peeps" : peepArray
 		} )
 
+def updateFromString(groupName,title,peepString):
+	peepArray = peepString.split(',')
+	updatePeeps(groupName,title,peepArray)
+
 def updatePeeps(groupName,title,peepArray):
 	grp=db[groupName]
 	if len(peepArray):	

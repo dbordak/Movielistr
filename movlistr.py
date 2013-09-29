@@ -22,7 +22,7 @@ db.authenticate(str(UNAME), str(PASSWORD))
 
 def create_nyt_url(searchTerm):
 	searchTerm = searchTerm.replace(' ','+')
-	return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_BASE_URL
+	return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_API_KEY
 
 def get_json(URL):
 	return loads(urlopen(URL).read())
@@ -40,12 +40,16 @@ def makeResultsJson(Jason):
 	movies = []
 	for movie in Jason:
 		m = movie['obj']
-		j = get_json(create_nyt_url(movie['obj']['title']))
-		m['summary'] = j['capsule_review']
-		m['link'] = j['link']['url']
+		print "I got to here"
+		#URL = create_nyt_url(movie['obj']['title'])
+		#print URL
+		#j = get_json(URL)
+		#m['summary'] = j['capsule_review']
+		#m['link'] = j['link']['url']
 		movies.append(m)
 
 def getResults(group,peepString):
+	print "test"
 	return makeResultsJson(search(group,peepString))
 
 # Mongo won't actually create a collection unless there's an element, so
@@ -106,7 +110,8 @@ def viewGroup(group):
 @app.route('/g/<group>/s', methods=['POST'])
 def searchRoute(group):
 	#return str(request.form['data'])
-	return search(group, request.form['data'])
+	print "Before calling getResults"
+	return getResults(group, request.form['data'])
 
 
 if __name__ == "__main__":

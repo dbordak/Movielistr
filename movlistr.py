@@ -131,6 +131,11 @@ def searchRoute(group):
 	print str(results2)
 	return str(results2)
 
+@app.route('/g/<group>/a', methods=['POST'])
+def addRoute(group):
+	addMovie(group, request.form['title'], request.form['data'].split(','))
+	return 'added'
+
 
 if __name__ == "__main__":
 	app.debug = True

@@ -51,7 +51,9 @@
 								toSee.push("{{name}}");
 							}
 						{% endfor %}
-						$.post('{{request.path}}', {data: toSee.toString()}).done(function(data){
+						alert('{{request.path~"/s"}}' +' '+toSee.toString());
+						$.post('{{request.path~"/s"}}', {data: toSee.toString()}).done(function(data){
+								alert(data);
 								$('#results').append(data);
 						});
 		        	});

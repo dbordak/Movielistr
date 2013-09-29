@@ -104,12 +104,13 @@ def viewGroup(group):
 		return 'good'
 
 @app.route('/g/<group>/s', methods=['POST'])
-def s(group):
+def searchRoute(group):
+	#return str(request.form['data'])
 	return search(group, request.form['data'])
 
 
 if __name__ == "__main__":
-	#app.debug = True
-	#app.run()
-	app.run(host='0.0.0.0')
+	app.debug = True
+	app.run()
+	#app.run(host='0.0.0.0')
 

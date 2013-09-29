@@ -129,8 +129,8 @@ def viewGroup(group):
 def jsonToArray(Jason):
 	movies = []
 	for m in Jason:
-		mov = [ m['title'], m['peeps'], m['summary'], m['review'] ]
-		movies.append(mov.copy())
+		mov = [ m['title'], m['peeps'], m['summary'], m['link'] ]
+		movies.append(mov)
 	return movies
 
 @app.route('/g/<group>/s', methods=['POST'])
@@ -138,7 +138,7 @@ def searchRoute(group):
 	#return str(request.form['data'])
 	resultJson = search(group, request.form['data'])
 	results2 = makeResultJson(resultJson)
-	return str(jsonToArray(results2))
+	return str(jsonToArray(results2)).encode("UTF-8")
 
 
 if __name__ == "__main__":

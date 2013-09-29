@@ -51,11 +51,9 @@
 								toSee.push("{{name}}");
 							}
 						{% endfor %}
-						alert('{{request.path~"/s"}}' +' '+toSee.toString());
 						$.post('{{request.path~"/s"}}', {data: toSee.toString()}).done(function(data){
 								alert(data);
-								var jsondata = jQuery.parseJSON(data);
-								$('#results').append(jsondata.toString());
+								//$('#results').append('<p>'+data+'</p>');
 						});
 		        	});
         		</script>

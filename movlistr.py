@@ -38,7 +38,7 @@ def search(group,peepArray):
 	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
 
 # Returns a json with Title, Peeps, Summary, and a link to the NYT review
-def makeResults(Jason):
+def makeResultsJson(Jason):
 	movies = []
 	for movie in Jason:
 		m = movie['obj']
@@ -46,6 +46,9 @@ def makeResults(Jason):
 		m['summary'] = j['capsule_review']
 		m['link'] = j['link']['url']
 		movies = movies + m
+
+def getResults(group,peepArray):
+	return makeResultsJson(search(group,peepArray))
 
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.
@@ -104,7 +107,7 @@ def viewGroup(group):
 
 
 if __name__ == "__main__":
-	app.debug = True
-	app.run()
-	#app.run(host='0.0.0.0')
+	#app.debug = True
+	#app.run()
+	app.run(host='0.0.0.0')
 

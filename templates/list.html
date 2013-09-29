@@ -44,11 +44,11 @@
 						<td align="center">
 						{% for peep in post.peeps %}
 							{% if peep == name %}
-								<input type='checkbox'>
+								<input type='checkbox' disabled=true>
 								{% set found=1 %}
 							{% endif %}
 							{% if loop.last and found==0 %}
-								<input type='checkbox' checked='true'>
+								<input type='checkbox' checked=true disabled=true>
 							{% endif %}
 						{% endfor %}
 						</td>

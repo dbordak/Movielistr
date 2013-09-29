@@ -132,7 +132,7 @@ def jsonToStringThing(Jason):
 		peepString = ""
 		for peep in m['peeps']:
 			peepString + peep + " "
-		peepString.trim()
+		peepString.strip()
 		movString = movString + m['title'] + " needs to be seen by " + peepString + ".\n" + '"' + m['summary'] + '"' + "\n" + "New York Times Review at: " + m['link'] + "\n\n"
 	return movString
 

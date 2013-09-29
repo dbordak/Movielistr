@@ -45,7 +45,7 @@ def makeResultsJson(Jason):
 		j = get_json(create_nyt_url(movie['obj']['title']))
 		m['summary'] = j['capsule_review']
 		m['link'] = j['link']['url']
-		movies = movies + m
+		movies.append(m)
 
 def getResults(group,peepArray):
 	return makeResultsJson(search(group,peepArray))

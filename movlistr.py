@@ -25,7 +25,7 @@ def create_nyt_url(searchTerm,exact):
 	if exact:
 		return NYT_BASE_URL+"&query='"+searchTerm+"'&api-key="+NYT_API_KEY
 	else:
-		return NYT_BASE_URL+"&query="+searchTerm+"&critics-pick=Y&api-key="+NYT_API_KEY
+		return NYT_BASE_URL+"&query="+searchTerm+"&api-key="+NYT_API_KEY
 
 def get_json(URL):
 	return loads(urlopen(URL).read())
@@ -39,11 +39,10 @@ def search(group,peepString):
 	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
 
 # Returns a json with Title, Peeps, Summary, and a link to the NYT review
-def makeResultsJson(Jason):
+def make_NYT_Json(Jason):
 	nyt = []
 	for movie in Jason:
 		URL = create_nyt_url(movie['obj']['title'],True)
-		print URL
 		j = get_json(URL)
 		if int(j['num_results']):
 			m = {
@@ -51,6 +50,11 @@ def makeResultsJson(Jason):
 				"link" : j['results'][0]['link']['url']
 				}
 			nyt.append(m.copy())
+		else:
+			m = {
+				"summary" : "No summary found",
+				"link" : "No link found"
+				}
 		#else:
 		#	URL2 = create_nyt_url(movie['obj']['title'],False)
 		#	print URL2
@@ -65,8 +69,16 @@ def makeResultsJson(Jason):
 	return nyt
 
 def getResults(group,peepString):
-	print "test"
 	return makeResultsJson(search(group,peepString))
+
+def compileJson(movieJson,NYT_Json):
+	final = []
+	for m in movieJson:
+		movie = m['obj']
+		movie['summary'] = NYT_Json['summary']
+		movie['link'] = NYT_Json['link']
+		final.append(movie.copy())
+	return final
 
 # Mongo won't actually create a collection unless there's an element, so
 # force users to add one movie in order to create their group.
@@ -126,12 +138,9 @@ def viewGroup(group):
 @app.route('/g/<group>/s', methods=['POST'])
 def searchRoute(group):
 	#return str(request.form['data'])
-	print "Before calling getResults"
 	resultJson = search(group, request.form['data'])
-	print str(resultJson)
-	results2 = makeResultsJson(resultJson)
-	print str(results2)
-	return "nothing"
+	results2 = make_NYT_Json(resultJson)
+	return compileJson(resultJson,results2)
 
 
 if __name__ == "__main__":

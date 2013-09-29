@@ -19,7 +19,10 @@ def index():
 
 @app.route('/g/<group>')
 def viewGroup(group):
+	if group.startswith("NAMES"):
+		return "nope"
 	grp=db[group]
+	nam=db["NAMES"+group]
 	#ret = ''
 	#for post in grp.find():
 	#	ret = ret + str(post)

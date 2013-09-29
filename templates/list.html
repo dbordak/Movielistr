@@ -31,17 +31,35 @@
 
 		<table border="1">
 			<tr>
-				<td align="right">TITLE</td>
-				<td>PEOPLE</td>
+				<td></td>
+				{% for name in names %}
+				<td>{{name}}</td>
+				{% endfor %}
 			</tr>
 			{% for post in posts %}
 			<tr>
 				<td align="right">{{post.title}}</td>
+				{% with found=0 %}
+					{% for name in names %}
+						<td align="center">
+						{% for peep in post.peeps %}
+							{% if peep == name %}
+								<input type='checkbox'>
+								{% set found=1 %}
+							{% endif %}
+							{% if loop.last and found==0 %}
+								<input type='checkbox' checked='true'>
+							{% endif %}
+						{% endfor %}
+						</td>
+					{% endfor %}
+				{% endwith %}
+				<!--
 				<td>
 				{% for person in post.peeps %}
 				{{person}}
 				{% endfor %}
-				</td>
+				</td>-->
 			</tr>
 			{% endfor %}
 		</table>

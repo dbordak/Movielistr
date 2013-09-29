@@ -32,7 +32,7 @@ def viewGroup(group):
 	#	ret = ret + str(post)
 	#return ret
 
-	return render_template('list.html', posts=grp.find())
+	return render_template('list.html', posts=grp.find(), names=nam.find_one()['names'])
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')

@@ -13,10 +13,43 @@ connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
 db = connection["movlistrdev"]
 db.authenticate(str(UNAME), str(PASSWORD))
 
+# Returns a JSON array whose elements contain the fields "score" and "obj".
+# After the search is completed, "score" is no longer needed -- in order to
+# use the results, you should iterate through the array and use the "obj"s,
+# which contain the usual _id, title, and peeps fields.
+def search(group,peepArray):
+	peepString = ""
+	for peep in peepArray:
+		peepString = peepString + peep + " "
+	return db.command('text',group,search=peepString,limit=10)['results']
+
+# The following 3 functions are untested.
+
+# Mongo won't actually create a collection unless there's an element, so
+# force users to add one movie in order to create their group.
+def createGroup(groupName, peepArray, title, subPeepArray):
+	nam=db["NAMES"+groupName]
+	nam.insert({"names":peepArray})
+	addMovie(groupName,title,subPeepArray)
+	db[groupName].create_index([('peeps','text')])
+
+def addMovie(groupName,title,peepArray):
+	grp=db[groupName]
+	grp.insert( {
+		"title" : title,
+		"peeps" : peepArray
+		} )
+
+def updatePeeps(groupName,idnum,peepArray):
+	grp=db[groupName]
+	if len(peepArray):
+		grp.update( { "_id" : idnum }, { "$set" : { "peeps" : peepArray } } )
+	else:
+		grp.remove( { "_id" : idnum } )
 @app.route('/')
 def index():
-	p = [ "Bonk", "Boink" ]
-	createGroup("Scoot",p,"Pootisman 2",p)
+	#p = [ "Bonk", "Boink" ]
+	#createGroup("Scoot", p, "Pootisman 2", p)
 	return 'Hello World'
 
 @app.route('/g/<group>')
@@ -37,38 +70,7 @@ def viewGroup(group):
 	return render_template('list.html', posts=grp.find())
 
 if __name__ == "__main__":
-	app.run(host='0.0.0.0')
+	app.debug = True
+	app.run()
+	#app.run(host='0.0.0.0')
 
-# Returns a JSON array whose elements contain the fields "score" and "obj".
-# After the search is completed, "score" is no longer needed -- in order to
-# use the results, you should iterate through the array and use the "obj"s,
-# which contain the usual _id, title, and peeps fields.
-def search(group,peepArray):
-	peepString = ""
-	for peep in peepArray:
-		peepString = peepString + peep + " "
-	return db.command('text',group,search=peepString,limit=10)['results']
-
-# The following 3 functions are untested.
-
-# Mongo won't actually create a collection unless there's an element, so
-# force users to add one movie in order to create their group.
-def createGroup(groupName,peepArray,title,subPeepArray):
-	nam=db["NAMES"+groupName]
-	nam.insert({"names":peepArray})
-	addMovie(groupName,title,subPeepArray)
-	db[groupName].create_index([('peeps','text')])
-
-def addMovie(groupName,title,peepArray):
-	grp=db[groupName]
-	grp.insert( {
-		"title" : title,
-		"peeps" : peepArray
-		} )
-
-def updatePeeps(groupName,idnum,peepArray):
-	grp=db[groupName]
-	if len(peepArray):
-		grp.update( { "_id" : idnum }, { "$set" : { "peeps" : peepArray } } )
-	else:
-		grp.remove( { "_id" : idnum } )

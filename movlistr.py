@@ -61,4 +61,7 @@ def addMovie(title,peepArray,groupName):
 
 def updatePeeps(idnum,peepArray,groupName):
 	grp=db[groupName]
-	grp.update( { "_id" : idnum }, { "$set" : { "peeps" : peepArray } } )
+	if len(peepArray):
+		grp.update( { "_id" : idnum }, { "$set" : { "peeps" : peepArray } } )
+	else:
+		grp.remove( { "_id" : idnum } )

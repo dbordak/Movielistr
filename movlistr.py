@@ -138,7 +138,7 @@ def searchRoute(group):
 	#return str(request.form['data'])
 	resultJson = search(group, request.form['data'])
 	results2 = makeResultJson(resultJson)
-	return str(jsonToArray(results2)).replace("u'","'").replace('u"',"'").replace('"',"'")
+	return str(jsonToArray(results2)).replace("u'","'").replace('u"','"')
 
 
 if __name__ == "__main__":

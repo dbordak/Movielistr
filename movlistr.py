@@ -21,6 +21,10 @@ def index():
 def viewGroup(group):
 	if group.startswith("NAMES"):
 		return "nope"
+	if group.startswith("system"):
+		return "nope"
+	if group.startswith("objectlabs"):
+		return "nope"
 	grp=db[group]
 	nam=db["NAMES"+group]
 	#ret = ''

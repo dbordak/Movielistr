@@ -48,7 +48,10 @@ def search(peepArray,group):
 	return db.command('text',group,search=peepString,limit=10)['results']
 
 # The following 3 functions are untested.
-def createGroup(peepArray,groupName):
+
+# Mongo won't actually create a collection unless there's an element, so
+# force users to add one movie in order to create their group.
+def createGroup(peepArray,groupName,title,subPeepArray):
 	nam=db["NAMES"+groupName]
 	nam.insert({"names":peepArray})
 

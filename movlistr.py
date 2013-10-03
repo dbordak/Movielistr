@@ -31,6 +31,7 @@ def get_json(URL):
 	return loads(urlopen(URL).read())
 
 def cleanTextRes(Jason):
+	print "Cleaning text results"
 	movies = []
 	for m in Jason:
 		movie = m['obj']
@@ -42,14 +43,17 @@ def cleanTextRes(Jason):
 # use the results, you should iterate through the array and use the "obj"s,
 # which contain the usual _id, title, and peeps fields.
 def textSearch(group,peepString):
+	print "Resorting to text search..."
 	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
 
 def search(group,peepString):
 	grp = db['group']
 	peepString = peepString.replace(","," ")
 	peepArray = peepString.split()
+	print "Performing initial search..."
 	set1 = grp.find({ "peeps" : { "$all": peepArray } },sort={"numPeeps":1},limit=MAX_RECOMMENDATIONS)
 	set2 = grp.find({ "peeps" : { "$in": peepArray } },sort={"numPeeps":1},limit=MAX_RECOMMENDATIONS)
+	print "Set1 length: "+len(set1)+"\nSet 2 length: "+len(set2)
 	if len(set1):
 		return set1.append(set2)
 	else:

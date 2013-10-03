@@ -5,6 +5,7 @@ from flask import Flask, render_template, request
 from pymongo import MongoClient
 from urllib2 import urlopen
 from json import loads
+import string
 
 app = Flask(__name__)
 
@@ -100,8 +101,8 @@ def addMovie(groupName,title,peepArray):
 		"title" : title,
 		"peeps" : peepArray,
 		"numPeeps" : len(peepArray),
-		"summary" : nyt['summary'],
-		"link" : nyt['link']
+		"summary" : n['summary'],
+		"link" : n['link']
 		} )
 
 def updateFromString(groupName,title,peepString):
@@ -149,7 +150,7 @@ def viewGroup(group):
 
 @app.route('/c/<group>', methods=['GET', 'POST'])
 def addGroup(group):
-	simpleCreateGroup(group,request.form['data'])
+	simpleCreateGroup(string.lower(group),request.form['data'])
 	return 'good'
 
 def jsonToStringThing(Jason):

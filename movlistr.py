@@ -30,27 +30,45 @@ def create_nyt_url(searchTerm,exact):
 def get_json(URL):
 	return loads(urlopen(URL).read())
 
+def cleanTextRes(Jason):
+	movies = []
+	for m in Jason:
+		movie = m['obj']
+		movies.append(movie)
+	return movies
+
 # Returns a JSON array whose elements contain the fields "score" and "obj".
 # After the search is completed, "score" is no longer needed -- in order to
 # use the results, you should iterate through the array and use the "obj"s,
 # which contain the usual _id, title, and peeps fields.
-def search(group,peepString):
-	peepString.replace(","," ")
+def textSearch(group,peepString):
 	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
+
+def search(group,peepString):
+	grp = db['group']
+	peepString = peepString.replace(","," ")
+	peepArray = peepString.split()
+	set1 = grp.find({ "peeps" : { $all: peepArray } },sort={"numPeeps":1})
+	set2 = grp.find({ "peeps" : { $in: peepArray } },sort={"numPeeps":1})
+	if len(set1):
+		return set1.append(set2)
+	else:
+		set1 = cleanTextRes(textSearch(group,peepString))
+		return set1.append(set2)
 
 # Returns a json with Title, Peeps, Summary, and a link to the NYT review
 def makeResultJson(Jason):
 	final = []
 	for movie in Jason:
-		URL = create_nyt_url(movie['obj']['title'],True)
-		j = get_json(URL)
-		m = movie['obj']
-		if int(j['num_results']):
-			m['summary'] = j['results'][0]['capsule_review']
-			m['link'] = j['results'][0]['link']['url']
-		else:
-			m["summary"] = "No summary found"
-			m["link"] = "No link found"
+		#URL = create_nyt_url(movie['obj']['title'],True)
+		#j = get_json(URL)
+		#m = movie['obj']
+		#if int(j['num_results']):
+		#	m['summary'] = j['results'][0]['capsule_review']
+		#	m['link'] = j['results'][0]['link']['url']
+		#else:
+		m["summary"] = "No summary found"
+		m["link"] = "No link found"
 		final.append(m.copy())
 		#else:
 		#	URL2 = create_nyt_url(movie['obj']['title'],False)
@@ -147,7 +165,6 @@ def jsonToStringThing(Jason):
 
 @app.route('/g/<group>/s', methods=['POST'])
 def searchRoute(group):
-	#return str(request.form['data'])
 	resultJson = search(group, request.form['data'])
 	results2 = makeResultJson(resultJson)
 	return jsonToStringThing(results2)

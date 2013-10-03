@@ -55,7 +55,9 @@ def search(group,peepString):
 	for doc in grp.find({ "peeps" : { "$in": peepArray } }).sort("numPeeps").limit(MAX_RECOMMENDATIONS):
 		set2.append(doc)
 	if len(set1):
-		set1.extend(set2)
+		for doc in set2:
+			if doc not in set1:
+				set1.append(doc)
 		return set1
 	else:
 		set1 = cleanTextRes(textSearch(group,peepString))

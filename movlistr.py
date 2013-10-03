@@ -51,9 +51,13 @@ def search(group,peepString):
 	peepString = peepString.replace(","," ")
 	peepArray = peepString.split()
 	print "Performing initial search..."
-	set1 = grp.find({ "peeps" : { "$all": peepArray } }).sort([("numPeeps",1)]).limit(MAX_RECOMMENDATIONS)
+	set1 = []
+	set2 = []
+	for doc in grp.find({ "peeps" : { "$all": peepArray } }).sort([("numPeeps",1)]).limit(MAX_RECOMMENDATIONS):
+		set1.append(doc.clone())
 	print "Between searches..."
-	set2 = grp.find({ "peeps" : { "$in": peepArray } }).sort([("numPeeps",1)]).limit(MAX_RECOMMENDATIONS)
+	for doc in grp.find({ "peeps" : { "$in": peepArray } }).sort([("numPeeps",1)]).limit(MAX_RECOMMENDATIONS):
+		set2.append(doc.clone())
 	print "Finished search"
 	print "Set1 length: "+len(set1)
 	print "Set 2 length: "+len(set2)

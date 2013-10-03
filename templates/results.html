@@ -9,7 +9,7 @@
 				{% endif %}
 				{{p}}.
 			{% else %}
-				{{p}},
+				{{p}}{% if loop.length>2 %},{% endif %}
 			{% endif %}
 		{% endfor %}
 {% endfor %}

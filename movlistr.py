@@ -62,30 +62,19 @@ def search(group,peepString):
 		set1.extend(set2)
 		return set1
 
-# Returns a json with Title, Peeps, Summary, and a link to the NYT review
-def makeResultJson(Jason):
-	final = []
-	for movie in Jason:
-		URL = create_nyt_url(movie['obj']['title'],True)
-		j = get_json(URL)
-		m = movie['obj']
-		if int(j['num_results']):
-			m['summary'] = j['results'][0]['capsule_review']
-			m['link'] = j['results'][0]['link']['url']
-		else:
-		m["summary"] = "No summary found"
-		m["link"] = "No link found"
-		final.append(m.copy())
-		#else:
-		#	URL2 = create_nyt_url(movie['obj']['title'],False)
-		#	j = get_json(URL2)
-		#	if int(j['num_results']):
-		#		m = {
-		#			"summary" : j['results'][0]['capsule_review'],
-		#			"link" : j['results'][0]['link']['url']
-		#			}
-		#		nyt.append(m.copy())
-	return final
+def get_NYT_stuff(title):
+	URL = create_nyt_url(title,True)
+	j = get_json(URL)
+	if int(j['num_results']):
+		return {
+				"summary" : j['results'][0]['capsule_review'],
+				"link" : j['results'][0]['link']['url']
+				}
+	else:
+		return {
+				"summary" : "No summary found",
+				"link" : "No link found"
+				}
 
 def getResults(group,peepString):
 	return makeResultsJson(search(group,peepString))

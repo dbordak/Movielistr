@@ -96,10 +96,13 @@ def createGroup(groupName, peepString, title, subPeepArray):
 
 def addMovie(groupName,title,peepArray):
 	grp=db[groupName]
+	n = get_NYT_stuff(title)
 	grp.insert( {
 		"title" : title,
 		"peeps" : peepArray,
-		"numPeeps" : len(peepArray)
+		"numPeeps" : len(peepArray),
+		"summary" : nyt['summary'],
+		"link" : nyt['link']
 		} )
 
 def updateFromString(groupName,title,peepString):

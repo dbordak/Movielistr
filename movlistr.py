@@ -160,14 +160,14 @@ def jsonToStringThing(Jason):
 		for peep in m['peeps']:
 			peepString = peepString + peep + " "
 		peepString.strip()
-		movString = movString + m['title'] + " needs to be seen by " + peepString + ".\n" + '"' + m['summary'] + '"' + "\n" + "New York Times Review at: " + m['link'] + "\n\n"
+		movString = movString + m['title'] + " needs to be seen by " + peepString + ".\n" #+ '"' + m['summary'] + '"' + "\n" + "New York Times Review at: " + m['link'] + "\n\n"
 	return movString
 
 @app.route('/g/<group>/s', methods=['POST'])
 def searchRoute(group):
 	resultJson = search(group, request.form['data'])
-	results2 = makeResultJson(resultJson)
-	return jsonToStringThing(results2)
+	#results2 = makeResultJson(resultJson)
+	return jsonToStringThing(resultsJson)
 
 
 if __name__ == "__main__":

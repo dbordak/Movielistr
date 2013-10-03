@@ -4,9 +4,10 @@
 		needs to be seen by
 		{% for p in m['peeps'] %}
 			{% if loop.last and loop.length>1 %}
-				and
+				and {{p}}.
+			{% else %}
+				{{p}},
 			{% endif %}
-			{{p}}
 		{% endfor %}
 {% endfor %}
 {% endif %}

@@ -31,7 +31,6 @@ def get_json(URL):
 	return loads(urlopen(URL).read())
 
 def cleanTextRes(Jason):
-	print "Cleaning text results"
 	movies = []
 	for m in Jason:
 		movie = m['obj']
@@ -43,29 +42,25 @@ def cleanTextRes(Jason):
 # use the results, you should iterate through the array and use the "obj"s,
 # which contain the usual _id, title, and peeps fields.
 def textSearch(group,peepString):
-	print "Resorting to text search..."
 	return db.command('text',group,search=peepString,limit=MAX_RECOMMENDATIONS)['results']
 
 def search(group,peepString):
-	grp = db['group']
+	grp = db[group]
 	peepString = peepString.replace(","," ")
 	peepArray = peepString.split()
-	print "Performing initial search..."
 	set1 = []
 	set2 = []
-	for doc in grp.find({ "peeps" : { "$all": peepArray } }).sort([("numPeeps",1)]).limit(MAX_RECOMMENDATIONS):
-		set1.append(doc.clone())
-		print doc
-	print "Between searches..."
-	for doc in grp.find({ "peeps" : { "$in": peepArray } }).sort([("numPeeps",1)]).limit(MAX_RECOMMENDATIONS):
-		set2.append(doc.clone())
-		print doc
-	print "Finished search"
+	for doc in grp.find({ "peeps" : { "$all": peepArray } }).sort("numPeeps").limit(MAX_RECOMMENDATIONS):
+		set1.append(doc)
+	for doc in grp.find({ "peeps" : { "$in": peepArray } }).sort("numPeeps").limit(MAX_RECOMMENDATIONS):
+		set2.append(doc)
 	if len(set1):
-		return set1.append(set2)
+		set1.extend(set2)
+		return set1
 	else:
 		set1 = cleanTextRes(textSearch(group,peepString))
-		return set1.append(set2)
+		set1.extend(set2)
+		return set1
 
 # Returns a json with Title, Peeps, Summary, and a link to the NYT review
 def makeResultJson(Jason):
@@ -178,7 +173,7 @@ def jsonToStringThing(Jason):
 def searchRoute(group):
 	resultJson = search(group, request.form['data'])
 	#results2 = makeResultJson(resultJson)
-	return jsonToStringThing(resultsJson)
+	return jsonToStringThing(resultJson)
 
 
 if __name__ == "__main__":

@@ -55,12 +55,12 @@ def search(group,peepString):
 	set2 = []
 	for doc in grp.find({ "peeps" : { "$all": peepArray } }).sort([("numPeeps",1)]).limit(MAX_RECOMMENDATIONS):
 		set1.append(doc.clone())
+		print doc
 	print "Between searches..."
 	for doc in grp.find({ "peeps" : { "$in": peepArray } }).sort([("numPeeps",1)]).limit(MAX_RECOMMENDATIONS):
 		set2.append(doc.clone())
+		print doc
 	print "Finished search"
-	print "Set1 length: "+len(set1)
-	print "Set 2 length: "+len(set2)
 	if len(set1):
 		return set1.append(set2)
 	else:

@@ -1,4 +1,10 @@
-<p>results.html injected</p>
 {% if data %}
-<p>{{data}}</p>
+{% for m in data %}
+	<h4>{{m['title']}}</h4>
+		needs to be seen by
+		{% for p in m['peeps'] %}
+			{{p}}
+		{% endfor %}
+{% endfor %}
+</table>
 {% endif %}

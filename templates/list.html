@@ -52,10 +52,7 @@
 								toSee.push("{{name}}");
 							}
 						{% endfor %}
-						$.post('{{request.path~"/s"}}', {data: toSee.toString()}).done(function(data){
-								alert(data);
-								//$('#results').append('<p>'+data+'</p>');
-						});
+						$('#results').load('{{request.path~"/s"}}', {data: toSee.toString()});
 		        	});
         		</script>
 			</tr>

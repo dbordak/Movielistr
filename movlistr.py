@@ -149,7 +149,8 @@ def viewGroup(group):
 
 @app.route('/c/<group>', methods=['GET', 'POST'])
 def addGroup(group):
-	print "I don't know what I'm supposed to do here"
+	simpleCreateGroup(group,request.form['data'])
+	return 'good'
 
 def jsonToStringThing(Jason):
 	movString = ""

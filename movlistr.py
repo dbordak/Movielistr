@@ -66,21 +66,19 @@ def search(group,peepString):
 def makeResultJson(Jason):
 	final = []
 	for movie in Jason:
-		#URL = create_nyt_url(movie['obj']['title'],True)
-		#j = get_json(URL)
-		#m = movie['obj']
-		#if int(j['num_results']):
-		#	m['summary'] = j['results'][0]['capsule_review']
-		#	m['link'] = j['results'][0]['link']['url']
-		#else:
+		URL = create_nyt_url(movie['obj']['title'],True)
+		j = get_json(URL)
+		m = movie['obj']
+		if int(j['num_results']):
+			m['summary'] = j['results'][0]['capsule_review']
+			m['link'] = j['results'][0]['link']['url']
+		else:
 		m["summary"] = "No summary found"
 		m["link"] = "No link found"
 		final.append(m.copy())
 		#else:
 		#	URL2 = create_nyt_url(movie['obj']['title'],False)
-		#	print URL2
 		#	j = get_json(URL2)
-		#	print "test?"
 		#	if int(j['num_results']):
 		#		m = {
 		#			"summary" : j['results'][0]['capsule_review'],
@@ -172,7 +170,6 @@ def jsonToStringThing(Jason):
 @app.route('/g/<group>/s', methods=['POST'])
 def searchRoute(group):
 	resultJson = search(group, request.form['data'])
-	#results2 = makeResultJson(resultJson)
 	return jsonToStringThing(resultJson)
 
 
@@ -180,4 +177,3 @@ if __name__ == "__main__":
 	app.debug = True
 	app.run()
 	#app.run(host='0.0.0.0')
-

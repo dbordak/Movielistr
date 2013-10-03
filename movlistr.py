@@ -87,7 +87,8 @@ def addMovie(groupName,title,peepArray):
 	grp=db[groupName]
 	grp.insert( {
 		"title" : title,
-		"peeps" : peepArray
+		"peeps" : peepArray,
+		"numPeeps" : len(peepArray)
 		} )
 
 def updateFromString(groupName,title,peepString):
@@ -102,7 +103,8 @@ def updatePeeps(groupName,title,peepArray):
 	elif len(peepArray):	
 		newEntry = {
 				"title" : title,
-				"peeps" : peepArray
+				"peeps" : peepArray,
+				"numPeeps" : len(peepArray)
 				}
 		grp.find_and_modify(
 				query={ "title" : title },

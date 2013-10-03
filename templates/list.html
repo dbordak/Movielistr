@@ -1,143 +1,141 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-   <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="../static/stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../static/stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../static/stylesheets/print.css" media="print" />
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv="X-UA-Compatible" content="chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="../static/stylesheets/stylesheet.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="../static/stylesheets/pygment_trac.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="../static/stylesheets/print.css" media="print" />
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
 
-    <title>movlistr</title>
+	<title>movlistr</title>
 
-    <script type="text/javascript" src="../static/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="../static/jquery-1.10.2.min.js"></script>
 
-  </head>
+</head>
 
-  <body>
-  
-    <header>
-      <div class="inner">
-        <h1>movlistr</h1>
-        <h2></h2>
-        <a href="https://github.com/dbordak/movlistr" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+<body>
+	<header>
+		<div class="inner">
+			<h1>movlistr</h1>
+			<h2></h2>
+			<a href="https://github.com/dbordak/movlistr" class="button"><small>View project on</small>GitHub</a>
+		</div>
+	</header>
 {% if posts %}
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
+	<div id="content-wrapper">
+		<div class="inner clearfix">
+			<section id="main-content">
 
-        <div id="results"></div>
-        
-		<table border="1">
-			<tr>
-				<td><input type='button' value='Pick best movies' id='recommendButton'></td>
-				<td></td>
+				<div id="results"></div>
+				<table border="1">
+					<tr>
+						<td><input type='button' value='Pick best movies' id='recommendButton'></td>
+						<td></td>
 
-				{% for name in names %}
-				<td align="center"><input type='checkbox' class='select' id={{'select' ~ '_' ~ name}}></td>
-				{% endfor %}
-
-				<script type="text/javascript">
-		        	$('#recommendButton').click(function(){
-		        		var toSee = new Array();
-		        		{% for name in names %}
-							if($("#{{'select' ~ '_' ~ name}}").is(':checked') ){
-								toSee.push("{{name}}");
-							}
-						{% endfor %}
-						$('#results').load('{{request.path~"/s"}}', {data: toSee.toString()});
-		        	});
-        		</script>
-			</tr>
-			<tr>
-				<td>
-					<input type='button' value='Add movie' id='addButton'>
-					<input type='text' id='addField'>
-					<input type='button' value='>' id='addSubmitButton'>
-				</td>
-				<script type="text/javascript">
-					$("#addField").hide();
-					$("#addSubmitButton").hide();
-					$("#addButton").click(function(){
-						$("#addButton").hide();
-						$("#addField").show();
-						$("#addSubmitButton").show();
-					});
-					$("#addSubmitButton").click(function(){
-						var needToSee = new Array();
 						{% for name in names %}
-							needToSee.push("{{name}}");
+							<td align="center"><input type='checkbox' class='select' id={{'select' ~ '_' ~ name}}></td>
 						{% endfor %}
-						$.post('{{request.path~"/a"}}', {title: $("#addField").val(), data: needToSee.toString()});
 
-						$("#addButton").show();
-						$("#addField").hide();
-						$("#addSubmitButton").hide();
-					});
-				</script>
-				<td></td>
-				{% for name in names %}
-				<td align="center">{{name}}</td>
-				{% endfor %}
-			</tr>
-			{% for post in posts %}
-			<tr>
-				<td align="right">{{post.title}}</td>
-				<td align="center"><input type='button' value='Edit' id={{loop.index}} placeholder="{{post.title}}"></td>
-				<script type="text/javascript">
-					$("#{{loop.index}}").click(function(){
-					if( $(this).prop('value')=='Edit' ){
-						$(this).prop('value', 'Save');
-						$("input.{{loop.index}}").prop("disabled", false);
-					}else{
-						$("input.{{loop.index}}").prop("disabled", true);
-						$(this).prop('value', 'Edit');
-
-						var needToSee = new Array();
-						{% set i = loop.index %}
-						{% for name in names %}
-							if(!($("#{{i ~ '_' ~ name}}").is(':checked') )){
-								needToSee.push("{{name}}");
-							}
-						{% endfor %}
-						$.post('{{request.path}}', {title: $(this).prop('placeholder'), data: needToSee.toString()});
-					}
-				});
-				</script>
-				{% with found=0 %}
-				{% set iter=loop.index %}
-					{% for name in names %}
-						<td align="center">
-						{% for peep in post.peeps %}
-							{% if peep == name %}
-								<input type='checkbox' disabled=true class={{iter}} id={{iter ~ '_' ~ name}}>
-								{% set found=1 %}
-							{% endif %}
-							{% if loop.last and found==0 %}
-								<input type='checkbox' checked=true disabled=true class={{iter}} id={{iter ~ '_' ~ name}}>
-							{% endif %}
-						{% endfor %}
+						<script type="text/javascript">
+							$('#recommendButton').click(function(){
+								var toSee = new Array();
+								{% for name in names %}
+									if($("#{{'select' ~ '_' ~ name}}").is(':checked') ){
+										toSee.push("{{name}}");
+									}
+								{% endfor %}
+								$('#results').load('{{request.path~"/s"}}', {data: toSee.toString()});
+							});
+						</script>
+					</tr>
+					<tr>
+						<td>
+							<input type='button' value='Add movie' id='addButton'>
+							<input type='text' id='addField'>
+							<input type='button' value='>' id='addSubmitButton'>
 						</td>
-					{% endfor %}
-				{% endwith %}
-				<!--
-				<td>
-				{% for person in post.peeps %}
-				{{person}}
-				{% endfor %}
-				</td>-->
-			</tr>
-			{% endfor %}
-		</table>
+						<script type="text/javascript">
+							$("#addField").hide();
+							$("#addSubmitButton").hide();
+							$("#addButton").click(function(){
+								$("#addButton").hide();
+								$("#addField").show();
+								$("#addSubmitButton").show();
+							});
+							$("#addSubmitButton").click(function(){
+								var needToSee = new Array();
+								{% for name in names %}
+									needToSee.push("{{name}}");
+								{% endfor %}
+								$.post('{{request.path~"/a"}}', {title: $("#addField").val(), data: needToSee.toString()});
 
-        </section>
+								$("#addButton").show();
+								$("#addField").hide();
+								$("#addSubmitButton").hide();
+							});
+						</script>
+						<td></td>
+						{% for name in names %}
+							<td align="center">{{name}}</td>
+						{% endfor %}
+					</tr>
+					{% for post in posts %}
+						<tr>
+							<td align="right">{{post.title}}</td>
+							<td align="center"><input type='button' value='Edit' id={{loop.index}} placeholder="{{post.title}}"></td>
+							<script type="text/javascript">
+								$("#{{loop.index}}").click(function(){
+									if( $(this).prop('value')=='Edit' ){
+										$(this).prop('value', 'Save');
+										$("input.{{loop.index}}").prop("disabled", false);
+									}else{
+										$("input.{{loop.index}}").prop("disabled", true);
+										$(this).prop('value', 'Edit');
+
+										var needToSee = new Array();
+										{% set i = loop.index %}
+										{% for name in names %}
+											if(!($("#{{i ~ '_' ~ name}}").is(':checked') )){
+												needToSee.push("{{name}}");
+											}
+										{% endfor %}
+										$.post('{{request.path}}', {title: $(this).prop('placeholder'), data: needToSee.toString()});
+									}
+								});
+							</script>
+							{% with found=0 %}
+								{% set iter=loop.index %}
+								{% for name in names %}
+									<td align="center">
+										{% for peep in post.peeps %}
+											{% if peep == name %}
+												<input type='checkbox' disabled=true class={{iter}} id={{iter ~ '_' ~ name}}>
+												{% set found=1 %}
+											{% endif %}
+											{% if loop.last and found==0 %}
+												<input type='checkbox' checked=true disabled=true class={{iter}} id={{iter ~ '_' ~ name}}>
+											{% endif %}
+										{% endfor %}
+									</td>
+								{% endfor %}
+							{% endwith %}
+							<!--
+							<td>
+							{% for person in post.peeps %}
+							{{person}}
+							{% endfor %}
+							</td>-->
+						</tr>
+					{% endfor %}
+				</table>
+
+			</section>
 {% else %}
 <p>Group name:</p>
 <input type='text' id='groupName'>
@@ -149,24 +147,23 @@
 		$.post('/'+$('#groupName').val(), {data:$('#friendNames').val()});
 	});
 </script>
-{% endif %} 
-        <aside id="sidebar">
+{% endif %}
+		<aside id="sidebar">
 <!--
-          <a href="https://github.com/revansopher/page/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/revansopher/page/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+		  <a href="https://github.com/revansopher/page/zipball/master" class="button">
+			<small>Download</small>
+			.zip file
+		  </a>
+		  <a href="https://github.com/revansopher/page/tarball/master" class="button">
+			<small>Download</small>
+			.tar.gz file
+		  </a>
 -->
 		<p>Website by Dan Bordak and Revan Sopher, (c) 2013</p>
-        <p>Based on Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
-    </div>
+		<p>Based on Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+		</aside>
+	  </div>
+	</div>
 
- 
-  </body>
+</body>
 </html>

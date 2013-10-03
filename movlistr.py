@@ -131,11 +131,11 @@ def index():
 @app.route('/g/<group>', methods=['GET', 'POST'])
 def viewGroup(group):
 	if group.startswith("NAMES"):
-		return "nope"
+		return "Group cannot start with 'NAMES'"
 	if group.startswith("system"):
-		return "nope"
+		return "Group cannot start with 'system'"
 	if group.startswith("objectlabs"):
-		return "nope"
+		return "Group cannot start with 'objectlabs'"
 	if request.method == 'GET':
 		grp=db[group]
 		nam=db["NAMES"+group]

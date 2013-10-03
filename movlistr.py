@@ -76,9 +76,6 @@ def get_NYT_stuff(title):
 				"link" : "No link found"
 				}
 
-def getResults(group,peepString):
-	return makeResultsJson(search(group,peepString))
-
 def simpleCreateGroup(groupName, peepString):
 	peepString = peepString.replace(","," ")
 	title = "Star Wars Holiday Special"
@@ -152,7 +149,6 @@ def jsonToStringThing(Jason):
 	movString = ""
 	for m in Jason:
 		peepString = ""
-		#for x in range(0,len(m['peeps'])):
 		for peep in m['peeps']:
 			peepString = peepString + peep + " "
 		peepString.strip()

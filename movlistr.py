@@ -147,6 +147,10 @@ def viewGroup(group):
 		updateFromString(group, request.form['title'], request.form['data'])
 		return 'good'
 
+@app.route('/c/<group>', methods=['GET', 'POST'])
+def addGroup(group):
+	print "I don't know what I'm supposed to do here"
+
 def jsonToStringThing(Jason):
 	movString = ""
 	for m in Jason:

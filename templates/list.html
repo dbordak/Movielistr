@@ -144,7 +144,7 @@
 <input type='button' value='Create New Group' id='newGroupButton'>
 <script type="text/javascript">
 	$('#newGroupButton').click(function(){
-		$.post('/'+$('#groupName').val(), {data:$('#friendNames').val()});
+		$.post('/c/'+$('#groupName').val(), {data:$('#friendNames').val()});
 	});
 </script>
 {% endif %}

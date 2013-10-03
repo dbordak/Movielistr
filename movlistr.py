@@ -48,8 +48,8 @@ def search(group,peepString):
 	grp = db['group']
 	peepString = peepString.replace(","," ")
 	peepArray = peepString.split()
-	set1 = grp.find({ "peeps" : { $all: peepArray } },sort={"numPeeps":1})
-	set2 = grp.find({ "peeps" : { $in: peepArray } },sort={"numPeeps":1})
+	set1 = grp.find({ "peeps" : { "$all": peepArray } },sort={"numPeeps":1})
+	set2 = grp.find({ "peeps" : { "$in": peepArray } },sort={"numPeeps":1})
 	if len(set1):
 		return set1.append(set2)
 	else:

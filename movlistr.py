@@ -158,7 +158,8 @@ def jsonToStringThing(Jason):
 @app.route('/g/<group>/s', methods=['POST'])
 def searchRoute(group):
 	resultJson = search(group, request.form['data'])
-	return jsonToStringThing(resultJson)
+	#return jsonToStringThing(resultJson)
+	return render_template('results.html', data = resultJson)
 
 
 if __name__ == "__main__":

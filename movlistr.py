@@ -14,7 +14,7 @@ PASSWORD = os.environ.get('MONGO_PASS', None)
 NYT_API_KEY = os.environ.get('NYT_API_KEY', None)
 NYT_BASE_URL = "http://api.nytimes.com/svc/movies/v2/reviews/search?"
 
-MAX_RECOMMENDATIONS = 3
+MAX_RECOMMENDATIONS = 4
 
 connection = MongoClient("ds0"+str(PORT)+".mongolab.com", int(PORT))
 db = connection["movlistrdev"]
